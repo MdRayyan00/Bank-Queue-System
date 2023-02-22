@@ -18,7 +18,7 @@ public class EnqueueRecords {
         enqueueRecords(116000);
     }
 
-    public static void enqueueRecords(long count) throws IOException {
+    public static TransactionQueue enqueueRecords(long count) throws IOException {
         List<Transaction> allTransactions = new ExcelUtil().getFromExcel();
         TransactionQueue queue = new TransactionQueueImpl();
 
@@ -29,5 +29,7 @@ public class EnqueueRecords {
         Instant endTime = Instant.now();
 
         System.out.println("Total time taken to enqueue " + count + " records " + (endTime.toEpochMilli() - startTime.toEpochMilli()));
+
+        return queue;
     }
 }
