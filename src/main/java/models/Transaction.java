@@ -12,6 +12,9 @@ public class Transaction {
     private Double balance;
     private String status;
 
+    public Transaction() {
+    }
+
     public Transaction(String transactionId, String accountNumber, Date date, String transactionDetails, Double withdrawalAmount, Double depositAmount, Double balance, String status) {
         this.transactionId = transactionId;
         this.accountNumber = accountNumber;
