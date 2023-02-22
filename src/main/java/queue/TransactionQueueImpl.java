@@ -10,8 +10,8 @@ public class TransactionQueueImpl implements TransactionQueue {
 
     // Adding transaction in the Queue from the transactions file
     @Override
-    public void push(Transaction transaction) {
-        queue.push(transaction);
+    public void enqueue(Transaction transaction) {
+        queue.offer(transaction);
     }
 
     // Each transaction is checked and then status of transaction is updated (Settled, Declined) according to the checks

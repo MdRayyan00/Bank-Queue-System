@@ -5,7 +5,7 @@ import models.Transaction;
 import java.util.List;
 
 public interface TransactionQueue {
-    void push(Transaction transaction);
+    void enqueue(Transaction transaction);
 
     void processTransactions();
 
