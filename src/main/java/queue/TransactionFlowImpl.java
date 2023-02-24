@@ -7,11 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class TransactionQueueImpl implements TransactionQueue {
+public class TransactionFlowImpl implements TransactionFlow {
     Queue<Transaction> allTransactions = new LinkedList<>();
-
     //dead letter queue
     Queue<Transaction> declinedTransactions = new LinkedList<>();
+
+    Queue<Transaction> settledTransactions = new LinkedList<>();
+
 
     // Adding transaction in the Queue from the transactions file
     @Override
@@ -22,30 +24,29 @@ public class TransactionQueueImpl implements TransactionQueue {
     // Each transaction is checked and then status of transaction is updated (Settled, Declined) according to the checks
     @Override
     public void processTransactions() {
-        int i=0;
         Instant startTime = Instant.now();
-        for(Transaction currTransaction : allTransactions){
-            if(i%2==0){
+        int queueLength = allTransactions.size();
+        for (int i =0 ; i < queueLength; i++) {
+            Transaction currTransaction = allTransactions.poll();
+
+            // This checkmark is temporary to process the transaction.
+            // In real, there are various checks on each transaction for secure processing
+            if (i % 2 == 0) {
                 currTransaction.setStatus("Settled");
-            }else{
+                settledTransactions.offer(currTransaction);
+            } else {
                 currTransaction.setStatus("Declined");
+                declinedTransactions.offer(currTransaction);
             }
-            ++i;
         }
+
         Instant endTime = Instant.now();
-        System.out.println("Total time taken to process " + i + " records= " + (endTime.toEpochMilli() - startTime.toEpochMilli()));
+        System.out.println("Total time taken to process " + queueLength + " records= " + (endTime.toEpochMilli() - startTime.toEpochMilli()));
     }
 
-    // The transactions which are marked as Declined are retrieved and are processed again
+    // Once all the transactions are processed the 'Declined' transactions are processed again in case there is bank failure or data issue.
     @Override
-    public List<Transaction> getTransactionsByStatus(String status) {
-        return null;
-    }
-
-    // Once all the transactions are processed the 'Declined' transactions are removed from the Queue.
-    @Override
-    public List<Transaction> removeTransactionsByStatus(String status) {
-        return null;
+    public void processDeclineTransactions() {
     }
 
     // All the 'Settled' transactions are displayed.

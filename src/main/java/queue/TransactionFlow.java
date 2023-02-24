@@ -4,14 +4,12 @@ import models.Transaction;
 
 import java.util.List;
 
-public interface TransactionQueue {
+public interface TransactionFlow {
     void enqueue(Transaction transaction);
 
     void processTransactions();
 
-    List<Transaction> getTransactionsByStatus(String status);
-
-    List<Transaction> removeTransactionsByStatus(String status);
+    void processDeclineTransactions();
 
     List<Transaction> displayAll();
 
