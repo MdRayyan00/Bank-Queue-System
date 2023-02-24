@@ -2,6 +2,7 @@ package queue;
 
 import models.Transaction;
 
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -21,7 +22,18 @@ public class TransactionQueueImpl implements TransactionQueue {
     // Each transaction is checked and then status of transaction is updated (Settled, Declined) according to the checks
     @Override
     public void processTransactions() {
-
+        int i=0;
+        Instant startTime = Instant.now();
+        for(Transaction currTransaction : allTransactions){
+            if(i%2==0){
+                currTransaction.setStatus("Settled");
+            }else{
+                currTransaction.setStatus("Declined");
+            }
+            ++i;
+        }
+        Instant endTime = Instant.now();
+        System.out.println("Total time taken to process " + i + " records= " + (endTime.toEpochMilli() - startTime.toEpochMilli()));
     }
 
     // The transactions which are marked as Declined are retrieved and are processed again
