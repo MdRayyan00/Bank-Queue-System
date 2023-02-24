@@ -4,14 +4,18 @@ import models.Transaction;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class TransactionQueueImpl implements TransactionQueue {
-    LinkedList<Transaction> queue = new LinkedList<>();
+    Queue<Transaction> allTransactions = new LinkedList<>();
+
+    //dead letter queue
+    Queue<Transaction> declinedTransactions = new LinkedList<>();
 
     // Adding transaction in the Queue from the transactions file
     @Override
     public void enqueue(Transaction transaction) {
-        queue.offer(transaction);
+        allTransactions.offer(transaction);
     }
 
     // Each transaction is checked and then status of transaction is updated (Settled, Declined) according to the checks
