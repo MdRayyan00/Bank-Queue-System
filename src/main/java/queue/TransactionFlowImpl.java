@@ -4,7 +4,6 @@ import models.Transaction;
 
 import java.time.Instant;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 public class TransactionFlowImpl implements TransactionFlow {
@@ -23,10 +22,10 @@ public class TransactionFlowImpl implements TransactionFlow {
 
     // Each transaction is checked and then status of transaction is updated (Settled, Declined) according to the checks
     @Override
-    public void processTransactions() {
+    public TransactionFlow processTransactions() {
         Instant startTime = Instant.now();
         int queueLength = allTransactions.size();
-        for (int i =0 ; i < queueLength; i++) {
+        for (int i = 0; i < queueLength; i++) {
             Transaction currTransaction = allTransactions.poll();
 
             // This checkmark is temporary to process the transaction.
@@ -42,16 +41,31 @@ public class TransactionFlowImpl implements TransactionFlow {
 
         Instant endTime = Instant.now();
         System.out.println("Total time taken to process " + queueLength + " records= " + (endTime.toEpochMilli() - startTime.toEpochMilli()));
+        return this;
     }
 
     // Once all the transactions are processed the 'Declined' transactions are processed again in case there is bank failure or data issue.
     @Override
-    public void processDeclineTransactions() {
+    public TransactionFlow processDeclineTransactions() {
+        Instant startTime = Instant.now();
+        Transaction tr = declinedTransactions.poll();
+        int i = 0;
+        while (tr != null) {
+            if (i++ % 2 == 0) {
+                tr.setStatus("Settled");
+                settledTransactions.offer(tr);
+            }
+            tr = declinedTransactions.poll();
+        }
+
+        Instant endTime = Instant.now();
+        System.out.println("Total time taken to process " + i + " declined records= " + (endTime.toEpochMilli() - startTime.toEpochMilli()));
+        return this;
     }
 
     // All the 'Settled' transactions are displayed.
     @Override
-    public List<Transaction> displayAll() {
-        return null;
+    public void displayAll() {
+
     }
 }

@@ -9,13 +9,26 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 
-public class EnqueueRecords {
+public class TransactionSettlementProcess {
     public static void main(String[] args) throws IOException {
-        enqueueRecords(5000).processTransactions();
+        enqueueRecords(5000)
+                .processTransactions()
+                .processDeclineTransactions()
+                .displayAll();
 
-        enqueueRecords(30000).processTransactions();
+        System.out.println("------------------");
 
-        enqueueRecords(116000).processTransactions();
+        enqueueRecords(30000)
+                .processTransactions()
+                .processDeclineTransactions()
+                .displayAll();
+
+        System.out.println("------------------");
+
+        enqueueRecords(116000)
+                .processTransactions()
+                .processDeclineTransactions()
+                .displayAll();
     }
 
     public static TransactionFlow enqueueRecords(long count) throws IOException {

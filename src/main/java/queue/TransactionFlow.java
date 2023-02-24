@@ -7,10 +7,9 @@ import java.util.List;
 public interface TransactionFlow {
     void enqueue(Transaction transaction);
 
-    void processTransactions();
+    TransactionFlow processTransactions();
 
-    void processDeclineTransactions();
+    TransactionFlow processDeclineTransactions();
 
-    List<Transaction> displayAll();
-
+    void displayAll();
 }
