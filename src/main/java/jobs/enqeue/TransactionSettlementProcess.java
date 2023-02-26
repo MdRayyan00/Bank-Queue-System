@@ -11,24 +11,27 @@ import java.util.List;
 
 public class TransactionSettlementProcess {
     public static void main(String[] args) throws IOException {
-        enqueueRecords(5000)
+        long count[] = new long[] {5000, 30000, 116000};
+        enqueueRecords(count[0])
                 .processTransactions()
                 .processDeclineTransactions()
                 .displayAll();
 
         System.out.println("------------------");
 
-        enqueueRecords(30000)
+        enqueueRecords(count[1])
                 .processTransactions()
                 .processDeclineTransactions()
                 .displayAll();
 
         System.out.println("------------------");
-
-        enqueueRecords(116000)
+        Instant startTime = Instant.now();
+        enqueueRecords(count[2])
                 .processTransactions()
                 .processDeclineTransactions()
                 .displayAll();
+        Instant endTime = Instant.now();
+        System.out.println("Total time taken to process " + count[2] + " records " + (endTime.toEpochMilli() - startTime.toEpochMilli())+ " ms");
     }
 
     public static TransactionFlow enqueueRecords(long count) throws IOException {

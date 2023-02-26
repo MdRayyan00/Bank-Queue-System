@@ -3,6 +3,7 @@ package queue;
 import models.Transaction;
 
 import java.time.Instant;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -66,6 +67,10 @@ public class TransactionFlowImpl implements TransactionFlow {
     // All the 'Settled' transactions are displayed.
     @Override
     public void displayAll() {
-
+        Iterator iterator = settledTransactions.iterator();
+        while (iterator.hasNext()) {
+            Transaction currentTransaction = (Transaction) iterator.next();
+            System.out.println("Settled Transaction Id: "+ currentTransaction.getTransactionId());
+        }
     }
 }
