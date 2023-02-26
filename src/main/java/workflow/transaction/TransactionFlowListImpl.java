@@ -1,4 +1,4 @@
-package queue;
+package workflow.transaction;
 
 import models.Transaction;
 

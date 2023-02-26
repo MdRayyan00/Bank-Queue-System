@@ -1,17 +1,18 @@
-package jobs.enqeue;
+package runner;
 
 import models.Transaction;
-import queue.TransactionFlow;
-import queue.TransactionFlowQueueImpl;
 import util.ExcelUtil;
+import util.TransactionUtil;
+import workflow.transaction.TransactionFlow;
+import workflow.transaction.TransactionFlowListImpl;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 
-public class TransactionSettlementProcessUsingQueue {
+public class TransactionSettlementProcessUsingList {
     public static void main(String[] args) throws IOException {
-        enqueueRecords(5000)
+        TransactionUtil.enqueueRecords(5000, new TransactionFlowListImpl())
                 .processTransactions()
                 .processDeclineTransactions()
                 .displayAll();
@@ -20,20 +21,20 @@ public class TransactionSettlementProcessUsingQueue {
 
         enqueueRecords(30000)
                 .processTransactions()
-                .processDeclineTransactions()
-                .displayAll();
+                .processDeclineTransactions();
+        //.displayAll();
 
         System.out.println("------------------");
 
         enqueueRecords(116000)
                 .processTransactions()
-                .processDeclineTransactions()
-                .displayAll();
+                .processDeclineTransactions();
+        //.displayAll();
     }
 
     public static TransactionFlow enqueueRecords(long count) throws IOException {
         List<Transaction> allTransactions = new ExcelUtil().getFromExcel();
-        TransactionFlow transactionFlow = new TransactionFlowQueueImpl();
+        TransactionFlow transactionFlow = new TransactionFlowListImpl();
 
         Instant startTime = Instant.now();
         for (int i = 0; i < count; i++) {
