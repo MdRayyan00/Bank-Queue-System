@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class TransactionFlowImpl implements TransactionFlow {
+public class TransactionFlowQueueImpl implements TransactionFlow {
     Queue<Transaction> allTransactions = new LinkedList<>();
     //dead letter queue
     Queue<Transaction> declinedTransactions = new LinkedList<>();
