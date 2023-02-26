@@ -3,7 +3,6 @@ package workflow.transaction;
 import models.Transaction;
 
 import java.time.Instant;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -41,7 +40,7 @@ public class TransactionFlowQueueImpl implements TransactionFlow {
         }
 
         Instant endTime = Instant.now();
-        System.out.println("Total time taken to process " + queueLength + " records= " + (endTime.toEpochMilli() - startTime.toEpochMilli()));
+        System.out.println("Total time taken to check all transaction " + queueLength + " records " + (endTime.toEpochMilli() - startTime.toEpochMilli()) + " ms");
         return this;
     }
 
@@ -60,17 +59,23 @@ public class TransactionFlowQueueImpl implements TransactionFlow {
         }
 
         Instant endTime = Instant.now();
-        System.out.println("Total time taken to process " + i + " declined records= " + (endTime.toEpochMilli() - startTime.toEpochMilli()));
+        System.out.println("Total time taken to process " + i + " declined records " + (endTime.toEpochMilli() - startTime.toEpochMilli()) + " ms");
         return this;
     }
 
     // All the 'Settled' transactions are displayed.
     @Override
     public void displayAll() {
+        Instant startTime = Instant.now();
+        int size = settledTransactions.size();
+
         Transaction tr = settledTransactions.poll();
-        while(tr != null){
-            System.out.println(tr.getTransactionId());
+        while (tr != null) {
+            //System.out.println(tr.getTransactionId());
             tr = settledTransactions.poll();
         }
+
+        Instant endTime = Instant.now();
+        System.out.println("Total time taken to remove " + size + " settled transactions " + (endTime.toEpochMilli() - startTime.toEpochMilli()) + " ms");
     }
 }

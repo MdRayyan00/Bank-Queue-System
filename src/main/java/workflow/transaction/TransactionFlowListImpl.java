@@ -36,7 +36,7 @@ public class TransactionFlowListImpl implements TransactionFlow {
         }
 
         Instant endTime = Instant.now();
-        System.out.println("Total time taken to process " + i + " records= " + (endTime.toEpochMilli() - startTime.toEpochMilli()));
+        System.out.println("Total time taken to check all transaction " + i + " records " + (endTime.toEpochMilli() - startTime.toEpochMilli()) + " ms");
         return this;
     }
 
@@ -56,16 +56,20 @@ public class TransactionFlowListImpl implements TransactionFlow {
         }
 
         Instant endTime = Instant.now();
-        System.out.println("Total time taken to process " + i + " declined records= " + (endTime.toEpochMilli() - startTime.toEpochMilli()));
+        System.out.println("Total time taken to process " + i + " declined records " + (endTime.toEpochMilli() - startTime.toEpochMilli()) + " ms");
         return this;
     }
 
     @Override
     public void displayAll() {
+        Instant startTime = Instant.now();
+        int size = settleTransactionList.size();
         ListIterator<Transaction> transactionListIterator = settleTransactionList.listIterator();
         while (transactionListIterator.hasNext()) {
             Transaction transaction = transactionListIterator.next();
             transactionListIterator.remove();
         }
+        Instant endTime = Instant.now();
+        System.out.println("Total time taken to remove " + size + " settled transactions" + (endTime.toEpochMilli() - startTime.toEpochMilli()) + " ms");
     }
 }
