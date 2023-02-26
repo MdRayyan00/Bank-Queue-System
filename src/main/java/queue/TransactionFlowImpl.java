@@ -67,10 +67,10 @@ public class TransactionFlowImpl implements TransactionFlow {
     // All the 'Settled' transactions are displayed.
     @Override
     public void displayAll() {
-        Iterator iterator = settledTransactions.iterator();
-        while (iterator.hasNext()) {
-            Transaction currentTransaction = (Transaction) iterator.next();
-            System.out.println("Settled Transaction Id: "+ currentTransaction.getTransactionId());
+        Transaction tr = settledTransactions.poll();
+        while(tr != null){
+            System.out.println(tr.getTransactionId());
+            tr = settledTransactions.poll();
         }
     }
 }
